@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0c0e13">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>নামাজের সময়</title>
+  <link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+  <div class="scene">
+    <div class="wall" aria-hidden="true"></div>
+    <div class="tube tube-l" aria-hidden="true"></div>
+    <div class="tube tube-r" aria-hidden="true"></div>
+    <div class="glow glow-warm" aria-hidden="true"></div>
+    <div class="glow glow-cool" aria-hidden="true"></div>
+    <div class="glow glow-blue" aria-hidden="true"></div>
+
+    <div class="stage">
+      <div class="frame">
+        <main class="board" id="board">
+          <div class="sheen" aria-hidden="true"></div>
+          <div class="content">
+            <header class="mast">
+              <div class="top-actions">
+                <button class="ghost" id="qiblaBtn" type="button" aria-label="কিবলা">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="8.2"/>
+                    <path d="M14.7 9.1 13.2 13.6 8.7 15.1 10.2 10.6 14.7 9.1z" fill="currentColor" stroke="none"/>
+                  </svg>
+                </button>
+                <button class="ghost" id="settingsBtn" type="button" aria-label="সেটিংস">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M12 3.2v2.1M12 18.7v2.1M3.2 12h2.1M18.7 12h2.1M5.8 5.8l1.5 1.5M16.7 16.7l1.5 1.5M18.2 5.8l-1.5 1.5M7.3 16.7l-1.5 1.5"/>
+                  </svg>
+                </button>
+              </div>
+              <div class="crown" aria-hidden="true">
+                <svg viewBox="0 0 280 78" fill="none">
+                  <defs>
+                    <linearGradient id="rim" x1="140" y1="6" x2="140" y2="72" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="white" stop-opacity="0.95"/>
+                      <stop offset="1" stop-color="white" stop-opacity="0.28"/>
+                    </linearGradient>
+                    <radialGradient id="lampG" cx="0.35" cy="0.3" r="0.75">
+                      <stop stop-color="#fff1ec"/>
+                      <stop offset="1" stop-color="#ff7a64"/>
+                    </radialGradient>
+                    <mask id="crescent">
+                      <rect x="124" y="0" width="32" height="28" fill="black"/>
+                      <circle cx="140" cy="13" r="8" fill="white"/>
+                      <circle cx="144.2" cy="11.4" r="6.5" fill="black"/>
+                    </mask>
+                  </defs>
+                  <circle cx="58" cy="40" r="12" fill="rgba(255,120,96,0.16)"/>
+                  <circle cx="58" cy="40" r="6.2" fill="url(#lampG)"/>
+                  <circle cx="222" cy="40" r="12" fill="rgba(255,120,96,0.16)"/>
+                  <circle cx="222" cy="40" r="6.2" fill="url(#lampG)"/>
+                  <path d="M42 66C42 24 238 24 238 66" stroke="url(#rim)" stroke-width="1.6" stroke-linecap="round"/>
+                  <path d="M108 66C108 42 172 42 172 66" stroke="rgba(255,255,255,0.42)" stroke-width="1.15" stroke-linecap="round"/>
+                  <circle cx="140" cy="13" r="8" fill="rgba(255,255,255,0.94)" mask="url(#crescent)"/>
+                </svg>
+              </div>
+              <h1 id="title">নামাজের সময়</h1>
+              <p class="place"><span class="live" aria-hidden="true"></span><span id="place">সাভার</span></p>
+            </header>
+
+            <section class="clock-wrap" aria-label="এখনকার সময়">
+              <div class="clock">
+                <span class="hh" id="hh">–</span><span class="sep">:</span><span id="mm">––</span><span class="sep">:</span><span class="ss" id="ss">––</span>
+              </div>
+              <span class="ampm" id="ampm"></span>
+            </section>
+
+            <section class="date-wrap">
+              <div class="date" id="date">––:––:––</div>
+              <div class="date-sub" id="dateSub"></div>
+            </section>
+
+            <div class="list" id="list">
+              <div class="cols" aria-hidden="true">
+                <span>ওয়াক্ত</span>
+                <span class="c-azan">আযান</span>
+                <span class="c-jam">জামাত</span>
+              </div>
+              <div class="rows" id="rows"></div>
+            </div>
+
+            <footer class="status" id="status">
+              <div class="status-top">
+                <span class="kicker" id="kicker">পরবর্তী</span>
+                <span class="chip" id="waqtChip"></span>
+              </div>
+              <div class="status-main" id="statusMain">—</div>
+              <div class="count" id="count">––:––:––</div>
+              <div class="note" id="note"></div>
+              <div class="track" aria-hidden="true"><div class="fill" id="fill"></div></div>
+            </footer>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" hidden></div>
+  <div class="sr" id="live" aria-live="polite"></div>
+  <div class="scrim" id="scrim" hidden></div>
+
+  <section class="sheet" id="detailSheet" role="dialog" aria-modal="true" aria-labelledby="detailTitle" hidden>
+    <div class="handle" aria-hidden="true"></div>
+    <header class="sheet-h">
+      <h2 id="detailTitle">নামাজ</h2>
+      <button class="ghost" type="button" data-close aria-label="বন্ধ">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </header>
+    <div class="body" id="detailBody"></div>
+  </section>
+
+  <section class="sheet" id="qiblaSheet" role="dialog" aria-modal="true" aria-labelledby="qiblaTitle" hidden>
+    <div class="handle" aria-hidden="true"></div>
+    <header class="sheet-h">
+      <h2 id="qiblaTitle">কিবলা</h2>
+      <button class="ghost" type="button" data-close aria-label="বন্ধ">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </header>
+    <div class="body">
+      <div class="compass-wrap">
+        <div class="compass" id="compass">
+          <div class="rose" id="rose">
+            <span class="tick-n">N</span>
+            <span class="tick-e">E</span>
+            <span class="tick-s">S</span>
+            <span class="tick-w">W</span>
+            <div class="needle" id="needle"><span></span></div>
+            <div class="hub"></div>
+          </div>
+        </div>
+      </div>
+      <p class="qibla-read" id="qiblaRead">—</p>
+      <p class="qibla-sub" id="qiblaSub"></p>
+      <button class="linkish" id="compassBtn" type="button">কম্পাস চালু করুন</button>
+      <p class="hint">উত্তর স্থির রাখলে সুই কিবলার দিক দেখায়। কম্পাস চালু থাকলে ফোন ঘুরিয়ে সুইকে উপরে আনুন।</p>
+    </div>
+  </section>
+
+  <section class="sheet" id="settingsSheet" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" hidden>
+    <div class="handle" aria-hidden="true"></div>
+    <header class="sheet-h">
+      <h2 id="settingsTitle">সেটিংস</h2>
+      <button class="ghost" type="button" data-close aria-label="বন্ধ">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </header>
+    <div class="body">
+      <div class="group">
+        <h3>মসজিদ</h3>
+        <div class="field">
+          <label for="nameInput">নাম</label>
+          <input id="nameInput" type="text" maxlength="42" placeholder="নামাজের সময়" autocomplete="organization">
+        </div>
+        <div class="field">
+          <label for="citySelect">শহর</label>
+          <select id="citySelect"></select>
+        </div>
+        <div class="field">
+          <span class="lab">অবস্থান</span>
+          <button class="linkish" id="geoBtn" type="button" style="width:auto;margin:0;padding:8px 12px">ফোনের অবস্থান</button>
+        </div>
+        <p class="msg" id="geoMsg"></p>
+      </div>
+
+      <div class="group">
+        <h3>হিসাব</h3>
+        <div class="field">
+          <span class="lab">আসর</span>
+          <div class="seg" role="radiogroup" aria-label="মাযহাব">
+            <button type="button" data-madhab="Hanafi" aria-checked="true">হানাফি</button>
+            <button type="button" data-madhab="Standard" aria-checked="false">শাফেয়ী</button>
+          </div>
+        </div>
+        <div class="field">
+          <span class="lab">ঘড়ি</span>
+          <div class="seg" role="radiogroup" aria-label="ঘড়ির ধরন">
+            <button type="button" data-hour="12" aria-checked="true">১২ ঘণ্টা</button>
+            <button type="button" data-hour="24" aria-checked="false">২৪ ঘণ্টা</button>
+          </div>
+        </div>
+        <div class="field">
+          <span class="lab">সংখ্যা</span>
+          <div class="seg" role="radiogroup" aria-label="সংখ্যা">
+            <button type="button" data-digit="en" aria-checked="true">123</button>
+            <button type="button" data-digit="bn" aria-checked="false">১২৩</button>
+          </div>
+        </div>
+        <div class="field">
+          <span class="lab">হিজরি সমন্বয়</span>
+          <div class="stepper">
+            <button type="button" id="hijriMinus" aria-label="এক দিন কমান">−</button>
+            <b id="hijriVal">0</b>
+            <button type="button" id="hijriPlus" aria-label="এক দিন বাড়ান">+</button>
+          </div>
+        </div>
+        <p class="hint">আযান কারাচি পদ্ধতিতে (ফজর ১৮°, এশা ১৮°) প্রতিদিন হিসাব হয়। আসর হানাফি বা শাফেয়ী বেছে নিন। হিজরি চাঁদ দেখার জন্য ±১ দিন সরানো যায়।</p>
+      </div>
+
+      <div class="group">
+        <h3>জামাতের সময়</h3>
+        <div class="field"><label for="jam-fajr">ফজর</label><input id="jam-fajr" type="time" value="05:10"></div>
+        <div class="field"><label for="jam-dhuhr">যোহর</label><input id="jam-dhuhr" type="time" value="13:16"></div>
+        <div class="field"><label for="jam-asr">আসর</label><input id="jam-asr" type="time" value="16:45"></div>
+        <div class="field">
+          <span class="lab">মাগরিব</span>
+          <div class="seg" role="radiogroup" aria-label="মাগরিব জামাত">
+            <button type="button" data-mag="offset" aria-checked="true">সূর্যাস্তের পর</button>
+            <button type="button" data-mag="fixed" aria-checked="false">নির্দিষ্ট</button>
+          </div>
+        </div>
+        <div class="field" id="magOffsetRow">
+          <span class="lab">কত মিনিট পর</span>
+          <div class="stepper">
+            <button type="button" id="magMinus" aria-label="কমান">−</button>
+            <b id="magVal">7</b>
+            <button type="button" id="magPlus" aria-label="বাড়ান">+</button>
+          </div>
+        </div>
+        <div class="field" id="magFixedRow" hidden>
+          <label for="jam-maghrib">সময়</label>
+          <input id="jam-maghrib" type="time" value="18:12">
+        </div>
+        <p class="hint" id="magPreview"></p>
+        <div class="field"><label for="jam-isha">এশা</label><input id="jam-isha" type="time" value="20:15"></div>
+        <div class="field"><label for="jam-jumuah">জুমা</label><input id="jam-jumuah" type="time" value="13:30"></div>
+        <div id="jamWarnings"></div>
+        <p class="hint">ফজর ৫:১০, যোহর ১:১৬, আসর ৪:৪৫, এশা ৮:১৫ ও জুমা ১:৩০ আপনার বোর্ডের জামাত। মাগরিব প্রতিদিন সূর্যাস্তের সঙ্গে চলে, তাই সেটা আযানের কয়েক মিনিট পরে রাখা হয়েছে।</p>
+        <button class="linkish" id="boardPreset" type="button">ছবির বোর্ডের সময় বসান</button>
+      </div>
+
+      <div class="group">
+        <h3>সতর্কতা</h3>
+        <div class="field">
+          <span class="lab">ঘণ্টাধ্বনি</span>
+          <button class="switch" id="soundToggle" type="button" role="switch" aria-checked="false" aria-label="ঘণ্টাধ্বনি">
+            <i></i>
+          </button>
+        </div>
+        <p class="hint">আযান বা জামাতের মিনিটে একটি ছোট কাচের ঘণ্টা বাজবে। আযানের তিলাওয়াত নয়।</p>
+      </div>
+
+      <button class="danger" id="resetBtn" type="button">সব আগের অবস্থায় ফেরান</button>
+      <p class="hint">সময় গণনা: University of Islamic Sciences, Karachi · PrayTimes.org। ঘড়ি এশিয়া/ঢাকা।</p>
+    </div>
+  </section>
+
+  <script src="PrayTimes.js"></script>
+  <script src="src/logic.js"></script>
+  <script src="src/app.js"></script>
+</body>
+</html>
