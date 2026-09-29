@@ -1,263 +1,382 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="bn">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0c0e13">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>নামাজের সময়</title>
+  <meta name="theme-color" content="#f3f7f4">
+  <meta name="description" content="প্রতিদিনের কাজ ও ঘুমের সময় লিখে রাখুন, লক্ষ্য ঠিক করুন, আর নিজের সময়ের গ্রাফ দেখুন।">
+  <title>দিনলিপি — কাজ ও ঘুমের হিসাব</title>
   <link rel="stylesheet" href="src/styles.css">
 </head>
 <body>
-  <div class="scene">
-    <div class="wall" aria-hidden="true"></div>
-    <div class="tube tube-l" aria-hidden="true"></div>
-    <div class="tube tube-r" aria-hidden="true"></div>
-    <div class="glow glow-warm" aria-hidden="true"></div>
-    <div class="glow glow-cool" aria-hidden="true"></div>
-    <div class="glow glow-blue" aria-hidden="true"></div>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="দিনলিপি — শুরুতে যান">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M16 4.5a11.5 11.5 0 1 0 11.2 14.1" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/>
+            <path d="M16 9v7l5 3" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M22.5 7.5h5v5" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="brand-copy">
+          <strong>দিনলিপি</strong>
+          <small>কাজ · ঘুম · নিজের যত্ন</small>
+        </span>
+      </a>
 
-    <div class="stage">
-      <div class="frame">
-        <main class="board" id="board">
-          <div class="sheen" aria-hidden="true"></div>
-          <div class="content">
-            <header class="mast">
-              <div class="top-actions">
-                <button class="ghost" id="qiblaBtn" type="button" aria-label="কিবলা">
-                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true">
-                    <circle cx="12" cy="12" r="8.2"/>
-                    <path d="M14.7 9.1 13.2 13.6 8.7 15.1 10.2 10.6 14.7 9.1z" fill="currentColor" stroke="none"/>
-                  </svg>
-                </button>
-                <button class="ghost" id="settingsBtn" type="button" aria-label="সেটিংস">
-                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true">
-                    <circle cx="12" cy="12" r="3"/>
-                    <path d="M12 3.2v2.1M12 18.7v2.1M3.2 12h2.1M18.7 12h2.1M5.8 5.8l1.5 1.5M16.7 16.7l1.5 1.5M18.2 5.8l-1.5 1.5M7.3 16.7l-1.5 1.5"/>
-                  </svg>
-                </button>
-              </div>
-              <div class="crown" aria-hidden="true">
-                <svg viewBox="0 0 280 78" fill="none">
-                  <defs>
-                    <linearGradient id="rim" x1="140" y1="6" x2="140" y2="72" gradientUnits="userSpaceOnUse">
-                      <stop stop-color="white" stop-opacity="0.95"/>
-                      <stop offset="1" stop-color="white" stop-opacity="0.28"/>
-                    </linearGradient>
-                    <radialGradient id="lampG" cx="0.35" cy="0.3" r="0.75">
-                      <stop stop-color="#fff1ec"/>
-                      <stop offset="1" stop-color="#ff7a64"/>
-                    </radialGradient>
-                    <mask id="crescent">
-                      <rect x="124" y="0" width="32" height="28" fill="black"/>
-                      <circle cx="140" cy="13" r="8" fill="white"/>
-                      <circle cx="144.2" cy="11.4" r="6.5" fill="black"/>
-                    </mask>
-                  </defs>
-                  <circle cx="58" cy="40" r="12" fill="rgba(255,120,96,0.16)"/>
-                  <circle cx="58" cy="40" r="6.2" fill="url(#lampG)"/>
-                  <circle cx="222" cy="40" r="12" fill="rgba(255,120,96,0.16)"/>
-                  <circle cx="222" cy="40" r="6.2" fill="url(#lampG)"/>
-                  <path d="M42 66C42 24 238 24 238 66" stroke="url(#rim)" stroke-width="1.6" stroke-linecap="round"/>
-                  <path d="M108 66C108 42 172 42 172 66" stroke="rgba(255,255,255,0.42)" stroke-width="1.15" stroke-linecap="round"/>
-                  <circle cx="140" cy="13" r="8" fill="rgba(255,255,255,0.94)" mask="url(#crescent)"/>
-                </svg>
-              </div>
-              <h1 id="title">নামাজের সময়</h1>
-              <p class="place"><span class="live" aria-hidden="true"></span><span id="place">সাভার</span></p>
-            </header>
+      <div class="topbar-actions">
+        <span class="save-status" id="storageStatus" title="তথ্য এই ব্রাউজারেই থাকে; অন্য ব্রাউজারে নিতে ব্যাকআপ কোড তৈরি করুন">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span id="storageStatusText">এই ডিভাইসে সেভ</span>
+        </span>
+        <button class="icon-button" id="themeToggle" type="button" aria-label="ডার্ক মোড চালু করুন" title="থিম বদলান">
+          <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M20.2 15.3A8.6 8.6 0 0 1 8.7 3.8 8.8 8.8 0 1 0 20.2 15.3Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <button class="button button-quiet backup-open" id="backupOpen" type="button">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 15V3m0 0L7.5 7.5M12 3l4.5 4.5M4 14.5v4A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5v-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>ডাটা ব্যাকআপ</span>
+        </button>
+      </div>
+    </header>
 
-            <section class="clock-wrap" aria-label="এখনকার সময়">
-              <div class="clock">
-                <span class="hh" id="hh">–</span><span class="sep">:</span><span id="mm">––</span><span class="sep">:</span><span class="ss" id="ss">––</span>
-              </div>
-              <span class="ampm" id="ampm"></span>
-            </section>
+    <main id="top">
+      <section class="hero" aria-labelledby="pageTitle">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> নিজের দিনের ছন্দ বুঝে নিন</p>
+          <h1 id="pageTitle">কাজ ও ঘুমের<br><span>সহজ হিসাব</span></h1>
+          <p class="hero-description">প্রতিদিন কতটা কাজ করলেন, কতটা ঘুমালেন—লিখে রাখুন, আর সময়ের ভারসাম্য দেখুন এক নজরে।</p>
+          <div class="hero-meta">
+            <span class="today-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5" width="17" height="16" rx="3" stroke="currentColor" stroke-width="1.6"/><path d="M7.5 3v4M16.5 3v4M4 9.5h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="m9.4 15 1.7 1.7 3.8-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span id="todayDateLabel">আজকের তারিখ</span>
+            <span class="meta-divider" aria-hidden="true"></span>
+            <span class="hero-caption">ছোট্ট হিসাব, বড় অভ্যাস</span>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="art-orbit art-orbit-one"></div>
+          <div class="art-orbit art-orbit-two"></div>
+          <div class="art-sun"></div>
+          <div class="art-card art-card-work">
+            <span class="art-icon art-icon-work"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="13" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7M3.5 12h17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+            <span><b>কাজ</b><small>মনোযোগের সময়</small></span>
+            <span class="art-dots">•••</span>
+          </div>
+          <div class="art-card art-card-sleep">
+            <span class="art-icon art-icon-sleep"><svg viewBox="0 0 24 24" fill="none"><path d="M19.4 15A8.1 8.1 0 0 1 9 4.6 8.4 8.4 0 1 0 19.4 15Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span><b>ঘুম</b><small>বিশ্রামের সময়</small></span>
+            <span class="art-sparkle">✳</span>
+          </div>
+          <span class="art-label">দিনের ভারসাম্য</span>
+        </div>
+      </section>
 
-            <section class="date-wrap">
-              <div class="date" id="date">––:––:––</div>
-              <div class="date-sub" id="dateSub"></div>
-            </section>
+      <section class="metric-grid" aria-label="নির্বাচিত দিনের সারাংশ">
+        <article class="metric-card metric-work">
+          <div class="metric-head">
+            <span class="metric-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="13" rx="3" stroke="currentColor" stroke-width="1.7"/><path d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7M3.5 12h17M10 12v2h4v-2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="metric-context" id="workContext">নির্বাচিত দিনের কাজ</span>
+            <span class="metric-decoration" aria-hidden="true">01</span>
+          </div>
+          <p class="metric-label">কাজের সময়</p>
+          <p class="metric-value" id="workValue">—</p>
+          <p class="metric-caption" id="workCaption">এখনও কোনো তথ্য যোগ করা হয়নি</p>
+          <div class="metric-progress" role="progressbar" id="workProgress" aria-label="কাজের লক্ষ্যের অগ্রগতি" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <span id="workProgressFill"></span>
+          </div>
+          <div class="metric-foot"><span>লক্ষ্য <b id="workGoalLabel">৮ ঘণ্টা</b></span><span id="workPercent">০%</span></div>
+        </article>
 
-            <div class="list" id="list">
-              <div class="cols" aria-hidden="true">
-                <span>ওয়াক্ত</span>
-                <span class="c-azan">আযান</span>
-                <span class="c-jam">জামাত</span>
+        <article class="metric-card metric-sleep">
+          <div class="metric-head">
+            <span class="metric-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M19.7 14.8A8.4 8.4 0 0 1 9.2 4.3a8.6 8.6 0 1 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="m17.2 4.5.45 1.35L19 6.3l-1.35.45-.45 1.35-.45-1.35-1.35-.45 1.35-.45.45-1.35Z" fill="currentColor"/></svg>
+            </span>
+            <span class="metric-context" id="sleepContext">নির্বাচিত দিনের ঘুম</span>
+            <span class="metric-decoration" aria-hidden="true">02</span>
+          </div>
+          <p class="metric-label">ঘুমের সময়</p>
+          <p class="metric-value" id="sleepValue">—</p>
+          <p class="metric-caption" id="sleepCaption">এখনও কোনো তথ্য যোগ করা হয়নি</p>
+          <div class="metric-progress" role="progressbar" id="sleepProgress" aria-label="ঘুমের লক্ষ্যের অগ্রগতি" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <span id="sleepProgressFill"></span>
+          </div>
+          <div class="metric-foot"><span>লক্ষ্য <b id="sleepGoalLabel">৮ ঘণ্টা</b></span><span id="sleepPercent">০%</span></div>
+        </article>
+      </section>
+
+      <section class="dashboard-grid" aria-label="সময়ের হিসাব ও প্রবণতা">
+        <div class="main-column">
+          <section class="panel chart-panel" aria-labelledby="chartTitle">
+            <div class="panel-heading chart-heading">
+              <div>
+                <p class="section-kicker">ধারাবাহিকতা</p>
+                <h2 id="chartTitle">সময়ের গ্রাফ</h2>
+                <p class="panel-description" id="chartRangeLabel">নির্বাচিত দিনসহ আগের ৭ দিন</p>
               </div>
-              <div class="rows" id="rows"></div>
+              <div class="range-switch" role="group" aria-label="গ্রাফের সময়সীমা">
+                <button type="button" data-range="7" aria-pressed="true">৭ দিন</button>
+                <button type="button" data-range="14" aria-pressed="false">১৪ দিন</button>
+                <button type="button" data-range="30" aria-pressed="false">৩০ দিন</button>
+              </div>
+            </div>
+            <div class="chart-wrap">
+              <svg class="trend-chart" id="trendChart" viewBox="0 0 840 270" role="img" aria-label="কাজ ও ঘুমের সময়ের গ্রাফ"></svg>
+            </div>
+            <div class="chart-legend" aria-label="গ্রাফের রং">
+              <span><i class="legend-dot legend-work" aria-hidden="true"></i> কাজ</span>
+              <span><i class="legend-dot legend-sleep" aria-hidden="true"></i> ঘুম</span>
+              <span class="chart-hint">বারে চাপ দিলে সেই দিনের হিসাব খুলবে</span>
+            </div>
+          </section>
+
+          <section class="panel entry-panel" id="entryPanel" aria-labelledby="entryTitle">
+            <div class="panel-heading entry-heading">
+              <div>
+                <p class="section-kicker">দৈনিক লগ</p>
+                <h2 id="entryTitle">দিনের হিসাব লিখুন</h2>
+                <p class="panel-description" id="dateContext">তারিখ বেছে নিয়ে সময় যোগ করুন</p>
+              </div>
+              <span class="entry-save-state" id="entrySaveState">সেভ করা তথ্য নিরাপদে আছে</span>
             </div>
 
-            <footer class="status" id="status">
-              <div class="status-top">
-                <span class="kicker" id="kicker">পরবর্তী</span>
-                <span class="chip" id="waqtChip"></span>
+            <div class="date-navigator" aria-label="হিসাবের তারিখ বাছুন">
+              <button class="nav-arrow" id="previousDate" type="button" aria-label="আগের দিন">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m14.5 5-7 7 7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <label class="date-input-wrap" for="selectedDate">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="3" stroke="currentColor" stroke-width="1.6"/><path d="M7.5 3v4M16.5 3v4M4 9.5h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                <input id="selectedDate" type="date" aria-label="যে তারিখের হিসাব লিখবেন">
+              </label>
+              <button class="nav-arrow" id="nextDate" type="button" aria-label="পরের দিন">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9.5 5 7 7-7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <button class="button button-today" id="todayButton" type="button">আজ</button>
+            </div>
+
+            <form id="entryForm" novalidate>
+              <div class="duration-grid">
+                <fieldset class="duration-card duration-work">
+                  <legend class="sr-only">কাজের সময়</legend>
+                  <div class="duration-heading">
+                    <span class="duration-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="13" rx="3" stroke="currentColor" stroke-width="1.7"/><path d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7M3.5 12h17M10 12v2h4v-2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                    <div><h3>কাজের সময়</h3><p>মোট কতক্ষণ কাজ করেছেন?</p></div>
+                  </div>
+                  <div class="duration-fields" dir="ltr">
+                    <label class="number-field"><span class="sr-only">কাজের ঘণ্টা</span><input id="workHours" type="number" min="0" max="24" step="1" inputmode="numeric" placeholder="০" aria-label="কাজের ঘণ্টা"><span>ঘণ্টা</span></label>
+                    <span class="duration-colon" aria-hidden="true">:</span>
+                    <label class="number-field"><span class="sr-only">কাজের মিনিট</span><input id="workMinutes" type="number" min="0" max="59" step="1" inputmode="numeric" placeholder="০০" aria-label="কাজের মিনিট"><span>মিনিট</span></label>
+                  </div>
+                  <p class="duration-help">২৪ ঘণ্টার মধ্যে মোট সময় লিখুন</p>
+                </fieldset>
+
+                <fieldset class="duration-card duration-sleep">
+                  <legend class="sr-only">ঘুমের সময়</legend>
+                  <div class="duration-heading">
+                    <span class="duration-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none"><path d="M19.7 14.8A8.4 8.4 0 0 1 9.2 4.3a8.6 8.6 0 1 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="m17.2 4.5.45 1.35L19 6.3l-1.35.45-.45 1.35-.45-1.35-1.35-.45 1.35-.45.45-1.35Z" fill="currentColor"/></svg>
+                    </span>
+                    <div><h3>ঘুমের সময়</h3><p>মোট কতক্ষণ ঘুমিয়েছেন?</p></div>
+                  </div>
+                  <div class="duration-fields" dir="ltr">
+                    <label class="number-field"><span class="sr-only">ঘুমের ঘণ্টা</span><input id="sleepHours" type="number" min="0" max="24" step="1" inputmode="numeric" placeholder="০" aria-label="ঘুমের ঘণ্টা"><span>ঘণ্টা</span></label>
+                    <span class="duration-colon" aria-hidden="true">:</span>
+                    <label class="number-field"><span class="sr-only">ঘুমের মিনিট</span><input id="sleepMinutes" type="number" min="0" max="59" step="1" inputmode="numeric" placeholder="০০" aria-label="ঘুমের মিনিট"><span>মিনিট</span></label>
+                  </div>
+                  <p class="duration-help">২৪ ঘণ্টার মধ্যে মোট সময় লিখুন</p>
+                </fieldset>
               </div>
-              <div class="status-main" id="statusMain">—</div>
-              <div class="count" id="count">––:––:––</div>
-              <div class="note" id="note"></div>
-              <div class="track" aria-hidden="true"><div class="fill" id="fill"></div></div>
-            </footer>
-          </div>
-        </main>
-      </div>
-    </div>
+
+              <div class="note-field">
+                <label for="dayNote">ছোট্ট নোট <span>ঐচ্ছিক</span></label>
+                <textarea id="dayNote" rows="2" maxlength="300" placeholder="আজকের দিনটা কেমন গেল? (ঐচ্ছিক)"></textarea>
+                <span class="note-count" id="noteCount">০ / ৩০০</span>
+              </div>
+
+              <p class="form-message" id="formMessage" role="status" aria-live="polite"></p>
+              <div class="form-actions">
+                <button class="button button-danger-quiet" id="deleteRecord" type="button" hidden>
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M10 11v6m4-6v6M6.5 7l.8 13h9.4l.8-13M9 7V4h6v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span>এই দিনের তথ্য মুছুন</span>
+                </button>
+                <button class="button button-primary" id="saveEntry" type="submit" disabled>
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 4h12l3 3v13H4V4h1Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8 4v6h8V4M8 20v-7h8v7" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+                  <span>হিসাব সেভ করুন</span>
+                </button>
+              </div>
+            </form>
+          </section>
+        </div>
+
+        <aside class="side-column" aria-label="লক্ষ্য ও সাম্প্রতিক তথ্য">
+          <section class="panel goals-panel" aria-labelledby="goalsTitle">
+            <div class="panel-heading compact-heading">
+              <div><p class="section-kicker">নিজের লক্ষ্য</p><h2 id="goalsTitle">প্রতিদিনের লক্ষ্য</h2></div>
+              <button class="text-button" id="editGoals" type="button">বদলান</button>
+            </div>
+            <div class="goal-row">
+              <span class="goal-symbol goal-symbol-work" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="13" rx="3" stroke="currentColor" stroke-width="1.7"/><path d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+              </span>
+              <div class="goal-copy"><span>কাজ</span><b id="goalWorkDisplay">৮ ঘণ্টা</b></div>
+              <span class="goal-caption">প্রতিদিন</span>
+            </div>
+            <div class="goal-row">
+              <span class="goal-symbol goal-symbol-sleep" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M19.7 14.8A8.4 8.4 0 0 1 9.2 4.3a8.6 8.6 0 1 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <div class="goal-copy"><span>ঘুম</span><b id="goalSleepDisplay">৮ ঘণ্টা</b></div>
+              <span class="goal-caption">প্রতিদিন</span>
+            </div>
+            <p class="goal-tip"><span aria-hidden="true">✦</span> লক্ষ্য পূরণ না হলেও সমস্যা নেই—নিয়মিত লিখে রাখাই আসল।</p>
+          </section>
+
+          <section class="panel week-panel" aria-labelledby="weekTitle">
+            <div class="panel-heading compact-heading">
+              <div><p class="section-kicker">সপ্তাহের সারাংশ</p><h2 id="weekTitle">৭ দিনের গড়</h2></div>
+              <span class="week-count" id="weekCount">০ দিন</span>
+            </div>
+            <div class="week-stat week-stat-work">
+              <span class="week-stat-icon" aria-hidden="true">↗</span>
+              <div><span>কাজের গড়</span><b id="averageWork">—</b></div>
+              <span class="week-total" id="totalWork">মোট —</span>
+            </div>
+            <div class="week-stat week-stat-sleep">
+              <span class="week-stat-icon" aria-hidden="true">☾</span>
+              <div><span>ঘুমের গড়</span><b id="averageSleep">—</b></div>
+              <span class="week-total" id="totalSleep">মোট —</span>
+            </div>
+            <p class="week-caption" id="weekCaption">নির্বাচিত দিনসহ আগের ৭ দিনের হিসাব</p>
+          </section>
+
+          <section class="panel history-panel" aria-labelledby="historyTitle">
+            <div class="panel-heading compact-heading">
+              <div><p class="section-kicker">আপনার রেকর্ড</p><h2 id="historyTitle">সাম্প্রতিক দিন</h2></div>
+              <span class="record-count" id="recordCount">০</span>
+            </div>
+            <div class="history-list" id="historyList"></div>
+            <button class="history-more" id="historyMore" type="button" hidden>সব এন্ট্রি দেখুন</button>
+          </section>
+
+          <section class="local-note" aria-label="ডাটার গোপনীয়তা">
+            <span class="local-note-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><rect x="4" y="10" width="16" height="11" rx="2.5" stroke="currentColor" stroke-width="1.6"/><path d="M8 10V7a4 4 0 1 1 8 0v3m-4 4v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </span>
+            <div><b>আপনার তথ্য, আপনার কাছেই</b><p>কোনো অ্যাকাউন্ট লাগে না। ডাটা এই ব্রাউজারে থাকে—অন্য ডিভাইসে নিতে ব্যাকআপ কোড ব্যবহার করুন।</p></div>
+          </section>
+        </aside>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>দিনলিপি</span><span class="footer-dot">·</span><span>আপনার সময়কে জানুন, নিজের মতো চলুন।</span>
+    </footer>
   </div>
 
-  <div class="toast" id="toast" role="status" hidden></div>
-  <div class="sr" id="live" aria-live="polite"></div>
-  <div class="scrim" id="scrim" hidden></div>
-
-  <section class="sheet" id="detailSheet" role="dialog" aria-modal="true" aria-labelledby="detailTitle" hidden>
-    <div class="handle" aria-hidden="true"></div>
-    <header class="sheet-h">
-      <h2 id="detailTitle">নামাজ</h2>
-      <button class="ghost" type="button" data-close aria-label="বন্ধ">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
-      </button>
-    </header>
-    <div class="body" id="detailBody"></div>
-  </section>
-
-  <section class="sheet" id="qiblaSheet" role="dialog" aria-modal="true" aria-labelledby="qiblaTitle" hidden>
-    <div class="handle" aria-hidden="true"></div>
-    <header class="sheet-h">
-      <h2 id="qiblaTitle">কিবলা</h2>
-      <button class="ghost" type="button" data-close aria-label="বন্ধ">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
-      </button>
-    </header>
-    <div class="body">
-      <div class="compass-wrap">
-        <div class="compass" id="compass">
-          <div class="rose" id="rose">
-            <span class="tick-n">N</span>
-            <span class="tick-e">E</span>
-            <span class="tick-s">S</span>
-            <span class="tick-w">W</span>
-            <div class="needle" id="needle"><span></span></div>
-            <div class="hub"></div>
-          </div>
+  <dialog class="app-dialog goals-dialog" id="goalsDialog" aria-labelledby="goalsDialogTitle">
+    <form id="goalsForm" novalidate>
+      <div class="dialog-header">
+        <div><p class="section-kicker">নিজের জন্য</p><h2 id="goalsDialogTitle">দৈনিক লক্ষ্য ঠিক করুন</h2></div>
+        <button class="icon-button dialog-close" type="button" data-close-dialog="goalsDialog" aria-label="বন্ধ করুন">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <p class="dialog-description">কাজ ও ঘুমের জন্য আপনার দৈনিক লক্ষ্য দিন। পরে চাইলে আবার বদলাতে পারবেন।</p>
+      <div class="goal-editor-row">
+        <span class="goal-editor-icon goal-symbol-work" aria-hidden="true">↗</span>
+        <div class="goal-editor-label"><b>কাজের লক্ষ্য</b><small>প্রতিদিন</small></div>
+        <div class="goal-editor-fields" dir="ltr">
+          <label><input id="goalWorkHours" type="number" min="0" max="24" step="1" inputmode="numeric" aria-label="কাজের লক্ষ্য ঘণ্টা"><span>ঘণ্টা</span></label>
+          <label><input id="goalWorkMinutes" type="number" min="0" max="59" step="1" inputmode="numeric" aria-label="কাজের লক্ষ্য মিনিট"><span>মিনিট</span></label>
         </div>
       </div>
-      <p class="qibla-read" id="qiblaRead">—</p>
-      <p class="qibla-sub" id="qiblaSub"></p>
-      <button class="linkish" id="compassBtn" type="button">কম্পাস চালু করুন</button>
-      <p class="hint">উত্তর স্থির রাখলে সুই কিবলার দিক দেখায়। কম্পাস চালু থাকলে ফোন ঘুরিয়ে সুইকে উপরে আনুন।</p>
+      <div class="goal-editor-row">
+        <span class="goal-editor-icon goal-symbol-sleep" aria-hidden="true">☾</span>
+        <div class="goal-editor-label"><b>ঘুমের লক্ষ্য</b><small>প্রতিদিন</small></div>
+        <div class="goal-editor-fields" dir="ltr">
+          <label><input id="goalSleepHours" type="number" min="0" max="24" step="1" inputmode="numeric" aria-label="ঘুমের লক্ষ্য ঘণ্টা"><span>ঘণ্টা</span></label>
+          <label><input id="goalSleepMinutes" type="number" min="0" max="59" step="1" inputmode="numeric" aria-label="ঘুমের লক্ষ্য মিনিট"><span>মিনিট</span></label>
+        </div>
+      </div>
+      <p class="dialog-error" id="goalError" role="alert"></p>
+      <div class="dialog-actions">
+        <button class="button button-quiet" type="button" data-close-dialog="goalsDialog">বাতিল</button>
+        <button class="button button-primary" type="submit">লক্ষ্য সেভ করুন</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="app-dialog backup-dialog" id="backupDialog" aria-labelledby="backupDialogTitle">
+    <div class="dialog-header">
+      <div><p class="section-kicker">ডাটা আপনার নিয়ন্ত্রণে</p><h2 id="backupDialogTitle">ব্যাকআপ ও পুনরুদ্ধার</h2></div>
+      <button class="icon-button dialog-close" type="button" data-close-dialog="backupDialog" aria-label="বন্ধ করুন">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
     </div>
-  </section>
-
-  <section class="sheet" id="settingsSheet" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" hidden>
-    <div class="handle" aria-hidden="true"></div>
-    <header class="sheet-h">
-      <h2 id="settingsTitle">সেটিংস</h2>
-      <button class="ghost" type="button" data-close aria-label="বন্ধ">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
-      </button>
-    </header>
-    <div class="body">
-      <div class="group">
-        <h3>মসজিদ</h3>
-        <div class="field">
-          <label for="nameInput">নাম</label>
-          <input id="nameInput" type="text" maxlength="42" placeholder="নামাজের সময়" autocomplete="organization">
-        </div>
-        <div class="field">
-          <label for="citySelect">শহর</label>
-          <select id="citySelect"></select>
-        </div>
-        <div class="field">
-          <span class="lab">অবস্থান</span>
-          <button class="linkish" id="geoBtn" type="button" style="width:auto;margin:0;padding:8px 12px">ফোনের অবস্থান</button>
-        </div>
-        <p class="msg" id="geoMsg"></p>
+    <div class="backup-content">
+      <div class="backup-notice">
+        <span class="notice-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 3 20 6v5.5c0 4.7-3.4 7.9-8 9.5-4.6-1.6-8-4.8-8-9.5V6l8-3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m8.5 12 2.3 2.3 4.8-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <p><b>ডাটা এই ব্রাউজারেই সেভ থাকে।</b> অন্য ব্রাউজার বা ডিভাইসে নিতে ব্যাকআপ কোড তৈরি করে কপি করুন। কোডটি এনক্রিপ্টেড নয়—যার হাতে যাবে সে আপনার রেকর্ড ফেরত আনতে পারবে; ব্যক্তিগত রাখুন।</p>
       </div>
 
-      <div class="group">
-        <h3>হিসাব</h3>
-        <div class="field">
-          <span class="lab">আসর</span>
-          <div class="seg" role="radiogroup" aria-label="মাযহাব">
-            <button type="button" data-madhab="Hanafi" aria-checked="true">হানাফি</button>
-            <button type="button" data-madhab="Standard" aria-checked="false">শাফেয়ী</button>
-          </div>
-        </div>
-        <div class="field">
-          <span class="lab">ঘড়ি</span>
-          <div class="seg" role="radiogroup" aria-label="ঘড়ির ধরন">
-            <button type="button" data-hour="12" aria-checked="true">১২ ঘণ্টা</button>
-            <button type="button" data-hour="24" aria-checked="false">২৪ ঘণ্টা</button>
-          </div>
-        </div>
-        <div class="field">
-          <span class="lab">সংখ্যা</span>
-          <div class="seg" role="radiogroup" aria-label="সংখ্যা">
-            <button type="button" data-digit="en" aria-checked="true">123</button>
-            <button type="button" data-digit="bn" aria-checked="false">১২৩</button>
-          </div>
-        </div>
-        <div class="field">
-          <span class="lab">হিজরি সমন্বয়</span>
-          <div class="stepper">
-            <button type="button" id="hijriMinus" aria-label="এক দিন কমান">−</button>
-            <b id="hijriVal">0</b>
-            <button type="button" id="hijriPlus" aria-label="এক দিন বাড়ান">+</button>
-          </div>
-        </div>
-        <p class="hint">আযান কারাচি পদ্ধতিতে (ফজর ১৮°, এশা ১৮°) প্রতিদিন হিসাব হয়। আসর হানাফি বা শাফেয়ী বেছে নিন। হিজরি চাঁদ দেখার জন্য ±১ দিন সরানো যায়।</p>
-      </div>
-
-      <div class="group">
-        <h3>জামাতের সময়</h3>
-        <div class="field"><label for="jam-fajr">ফজর</label><input id="jam-fajr" type="time" value="05:10"></div>
-        <div class="field"><label for="jam-dhuhr">যোহর</label><input id="jam-dhuhr" type="time" value="13:16"></div>
-        <div class="field"><label for="jam-asr">আসর</label><input id="jam-asr" type="time" value="16:45"></div>
-        <div class="field">
-          <span class="lab">মাগরিব</span>
-          <div class="seg" role="radiogroup" aria-label="মাগরিব জামাত">
-            <button type="button" data-mag="offset" aria-checked="true">সূর্যাস্তের পর</button>
-            <button type="button" data-mag="fixed" aria-checked="false">নির্দিষ্ট</button>
-          </div>
-        </div>
-        <div class="field" id="magOffsetRow">
-          <span class="lab">কত মিনিট পর</span>
-          <div class="stepper">
-            <button type="button" id="magMinus" aria-label="কমান">−</button>
-            <b id="magVal">7</b>
-            <button type="button" id="magPlus" aria-label="বাড়ান">+</button>
-          </div>
-        </div>
-        <div class="field" id="magFixedRow" hidden>
-          <label for="jam-maghrib">সময়</label>
-          <input id="jam-maghrib" type="time" value="18:12">
-        </div>
-        <p class="hint" id="magPreview"></p>
-        <div class="field"><label for="jam-isha">এশা</label><input id="jam-isha" type="time" value="20:15"></div>
-        <div class="field"><label for="jam-jumuah">জুমা</label><input id="jam-jumuah" type="time" value="13:30"></div>
-        <div id="jamWarnings"></div>
-        <p class="hint">ফজর ৫:১০, যোহর ১:১৬, আসর ৪:৪৫, এশা ৮:১৫ ও জুমা ১:৩০ আপনার বোর্ডের জামাত। মাগরিব প্রতিদিন সূর্যাস্তের সঙ্গে চলে, তাই সেটা আযানের কয়েক মিনিট পরে রাখা হয়েছে।</p>
-        <button class="linkish" id="boardPreset" type="button">ছবির বোর্ডের সময় বসান</button>
-      </div>
-
-      <div class="group">
-        <h3>সতর্কতা</h3>
-        <div class="field">
-          <span class="lab">ঘণ্টাধ্বনি</span>
-          <button class="switch" id="soundToggle" type="button" role="switch" aria-checked="false" aria-label="ঘণ্টাধ্বনি">
-            <i></i>
+      <section class="backup-section" aria-labelledby="makeBackupTitle">
+        <div class="backup-section-heading">
+          <div><h3 id="makeBackupTitle">ব্যাকআপ কোড তৈরি</h3><p>সেভ করা সব দিনের হিসাব একটি কোডে নিন।</p></div>
+          <button class="button button-primary" id="generateCode" type="button">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 15V3m0 0L7.5 7.5M12 3l4.5 4.5M4 14.5v4A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5v-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            কোড বানান
           </button>
         </div>
-        <p class="hint">আযান বা জামাতের মিনিটে একটি ছোট কাচের ঘণ্টা বাজবে। আযানের তিলাওয়াত নয়।</p>
-      </div>
+        <div class="code-output" id="codeOutput" hidden>
+          <label for="generatedCode">আপনার ব্যক্তিগত ব্যাকআপ কোড</label>
+          <textarea id="generatedCode" rows="4" readonly spellcheck="false" dir="ltr"></textarea>
+          <div class="code-actions"><span id="codeInfo">কোডটি নিরাপদ জায়গায় রাখুন।</span><button class="button button-small" id="copyCode" type="button">কপি করুন</button></div>
+        </div>
+      </section>
 
-      <button class="danger" id="resetBtn" type="button">সব আগের অবস্থায় ফেরান</button>
-      <p class="hint">সময় গণনা: University of Islamic Sciences, Karachi · PrayTimes.org। ঘড়ি এশিয়া/ঢাকা।</p>
+      <section class="backup-section restore-section" aria-labelledby="restoreTitle">
+        <div class="backup-section-heading"><div><h3 id="restoreTitle">কোড দিয়ে ডাটা ফেরত আনুন</h3><p>অন্য ব্রাউজারে তৈরি করা ব্যাকআপ কোড এখানে পেস্ট করুন।</p></div></div>
+        <label class="sr-only" for="restoreCode">ব্যাকআপ কোড</label>
+        <textarea class="restore-textarea" id="restoreCode" rows="4" placeholder="এখানে ব্যাকআপ কোড পেস্ট করুন" spellcheck="false" dir="ltr"></textarea>
+        <fieldset class="restore-modes">
+          <legend>এই ব্রাউজারের তথ্যের সঙ্গে কী করবেন?</legend>
+          <label><input type="radio" name="restoreMode" value="merge" checked><span><b>যোগ করুন</b><small>একই তারিখ থাকলে ব্যাকআপের তথ্য বসবে</small></span></label>
+          <label><input type="radio" name="restoreMode" value="replace"><span><b>পুরোটা বদলে দিন</b><small>এই ব্রাউজারের বর্তমান রেকর্ড মুছে যাবে</small></span></label>
+        </fieldset>
+        <button class="button button-primary restore-button" id="restoreButton" type="button" disabled>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.6-4L4 9m0 0V4m0 5h5M4 13a8 8 0 0 0 14.6 4L20 15m0 0v5m0-5h-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          কোড থেকে পুনরুদ্ধার
+        </button>
+      </section>
+
+      <section class="file-tools" aria-label="ফাইলের মাধ্যমে ব্যাকআপ">
+        <div><b>ফাইল দিয়েও রাখতে পারেন</b><p>কোডের পাশাপাশি JSON ফাইল ডাউনলোড বা ইমপোর্ট করুন।</p></div>
+        <div class="file-tool-actions">
+          <button class="button button-small" id="downloadBackup" type="button">JSON ডাউনলোড</button>
+          <label class="button button-small file-label" for="importBackup">ফাইল থেকে নিন<input id="importBackup" type="file" accept=".json,application/json" hidden></label>
+        </div>
+      </section>
+      <p class="sync-note">এখানে ছোট ইউজারনেম দিয়ে অনলাইন ক্লাউড-সিঙ্ক নেই। ব্যাকআপ কোডটি ডাটাসহ তৈরি হয়, তাই সেটি অন্য ব্রাউজারে দিলেই রেকর্ড ফিরিয়ে আনা যায়।</p>
     </div>
-  </section>
+  </dialog>
 
-  <script src="PrayTimes.js"></script>
-  <script src="src/logic.js"></script>
-  <script src="src/app.js"></script>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <script src="src/app.js" defer></script>
 </body>
 </html>
