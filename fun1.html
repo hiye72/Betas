@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Special Quiz 💖</title>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Hind Siliguri', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(-45deg, #ff2a85, #ff6b9d, #c9184a, #800f2f, #ff4d6d);
+      background-size: 400% 400%;
+      animation: gradientBG 8s ease infinite;
+      overflow: hidden;
+      padding: 20px;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .glow-circle {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(70px);
+      opacity: 0.6;
+      z-index: 0;
+      animation: float 6s ease-in-out infinite alternate;
+    }
+
+    .circle1 {
+      width: 280px;
+      height: 280px;
+      background: #ff9ebb;
+      top: 10%;
+      left: 15%;
+    }
+
+    .circle2 {
+      width: 320px;
+      height: 320px;
+      background: #ff0a54;
+      bottom: 10%;
+      right: 15%;
+      animation-delay: 2s;
+    }
+
+    @keyframes float {
+      from { transform: translateY(-20px) scale(1); }
+      to { transform: translateY(20px) scale(1.1); }
+    }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 440px;
+      background: rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid rgba(255, 255, 255, 0.35);
+      border-radius: 28px;
+      padding: 40px 28px;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 20px 50px rgba(128, 15, 47, 0.45);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+
+    .card.fade-out {
+      opacity: 0;
+      transform: scale(0.92);
+    }
+
+    .emoji {
+      font-size: 3rem;
+      margin-bottom: 14px;
+      display: inline-block;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.14); }
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 14px;
+      text-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
+    }
+
+    p.subtext {
+      font-size: 1.2rem;
+      margin-bottom: 26px;
+      color: #ffe5ec;
+      font-weight: 500;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 26px;
+    }
+
+    button, .link-btn {
+      flex: 1;
+      min-width: 130px;
+      padding: 14px 22px;
+      font-size: 1.15rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.28s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ffffff, #ffe3ec);
+      color: #c9184a;
+      box-shadow: 0 8px 20px rgba(255, 10, 84, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px) scale(1.04);
+      box-shadow: 0 12px 25px rgba(255, 255, 255, 0.45);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 10, 84, 0.55);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 10, 84, 0.85);
+      transform: translateY(-3px) scale(1.04);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="glow-circle circle1"></div>
+  <div class="glow-circle circle2"></div>
+
+  <div class="card" id="quiz-card">
+    <div class="emoji" id="emoji">💋</div>
+    <h1 id="question">তুমি কি এখনো ভার্জিন?</h1>
+    <p class="subtext" id="subtext" style="display: none;"></p>
+    <div class="btn-group" id="options">
+      <button class="btn-primary" onclick="handleAnswer(1, 'yes')">হ্যাঁ</button>
+      <button class="btn-secondary" onclick="handleAnswer(1, 'no')">না</button>
+    </div>
+  </div>
+
+  <script>
+    const targetLink = "https://gofile.io/d/mdPjpQ9Q";
+    const card = document.getElementById("quiz-card");
+    const emojiEl = document.getElementById("emoji");
+    const questionEl = document.getElementById("question");
+    const subtextEl = document.getElementById("subtext");
+    const optionsEl = document.getElementById("options");
+
+    function redirectNow() {
+      window.location.href = targetLink;
+    }
+
+    function updateCard(emoji, question, buttonsHTML, subtext = "") {
+      card.classList.add("fade-out");
+      setTimeout(() => {
+        emojiEl.textContent = emoji;
+        questionEl.textContent = question;
+        if (subtext) {
+          subtextEl.style.display = "block";
+          subtextEl.textContent = subtext;
+        } else {
+          subtextEl.style.display = "none";
+        }
+        optionsEl.innerHTML = buttonsHTML;
+        card.classList.remove("fade-out");
+      }, 320);
+    }
+
+    function handleAnswer(step, choice) {
+      if (step === 1) {
+        if (choice === "no") {
+          redirectNow();
+        } else {
+          updateCard(
+            "🤨💅",
+            "তুমি আবার গে নও তো?",
+            `<button class="btn-primary" onclick="handleAnswer(2, 'yes')">হ্যাঁ</button>
+             <button class="btn-secondary" onclick="handleAnswer(2, 'no')">না</button>`
+          );
+        }
+      } else if (step === 2) {
+        if (choice === "yes") {
+          redirectNow();
+        } else {
+          updateCard(
+            "😍💖",
+            "তাহলে কি তোমার মেয়ে পছন্দ?",
+            `<button class="btn-primary" onclick="handleAnswer(3, 'yes')">হ্যাঁ</button>
+             <button class="btn-secondary" onclick="handleAnswer(3, 'no')">না</button>`
+          );
+        }
+      } else if (step === 3) {
+        if (choice === "no") {
+          redirectNow();
+        } else {
+          updateCard(
+            "🔥💃",
+            "তোমার কেমন মেয়ে পছন্দ?",
+            `<button class="btn-primary" onclick="handleAnswer(4, 'chubby')">চাবি গার্ল</button>
+             <button class="btn-secondary" onclick="handleAnswer(4, 'petni')">পেত্নী গার্ল</button>`
+          );
+        }
+      } else if (step === 4) {
+        if (choice === "chubby") {
+          redirectNow();
+        } else {
+          updateCard(
+            "🙈🔥",
+            "তোমাকে নিয়ে আর পারিনা",
+            `<a href="${targetLink}" class="link-btn btn-primary">লিংকে যাও 🔥</a>`,
+            "এই নাও তোমার লিংক সারারাত ধরে এনজয় করো"
+          );
+          setTimeout(redirectNow, 3000);
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>
